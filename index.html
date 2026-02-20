@@ -341,17 +341,6 @@ noBtn.addEventListener("mouseenter",()=>{
     noBtn.style.transform="scale("+(Math.random()*0.5+0.5)+")";
 });
 
-function typeWriter(element,text,delay){
-    let i=0;
-    function typing(){
-        if(i<text.length){
-            element.innerHTML+=text.charAt(i);
-            i++;
-            setTimeout(typing,delay);
-        }
-    }
-    typing();
-}
 
 function typeConfession(){
     const loveTitle=document.getElementById("loveTitle");
@@ -390,21 +379,17 @@ function typeConfession(){
     });
 }
 
-function typeWriter(element,text,delay,callback){
-    let i=0;
-    function typing(){
-        if(i<text.length){
-            element.innerHTML+=text.charAt(i);
-            i++;
-            setTimeout(typing,delay);
-        } else if(callback){
-            callback();
-        }
+let musicStarted = false;
+
+function startMusic() {
+    if (!musicStarted) {
+        musicStarted = true;
+        loadTrack(currentTrack);
     }
-    typing();
 }
 
-
+document.addEventListener('click', startMusic, { once: true });
+    
 const tracks = [
     { src: 'music/passmurny-blik.mp3', title: 'Passmurny - Блик' },
     { src: 'music/Coldplay_-_Yellow.mp3', title: 'Coldplay - Yellow' },
@@ -449,4 +434,5 @@ document.addEventListener('click', function startMusicOnce() {
 
 </body>
 </html>
+
 
