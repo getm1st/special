@@ -379,17 +379,22 @@ function typeConfession(){
     });
 }
 
-let musicStarted = false;
 
-function startMusic() {
-    if (!musicStarted) {
-        musicStarted = true;
-        loadTrack(currentTrack);
+function typeWriter(element,text,delay,callback){
+    let i=0;
+    function typing(){
+        if(i<text.length){
+            element.innerHTML+=text.charAt(i);
+            i++;
+            setTimeout(typing,delay);
+        } else if(callback){
+            callback();
+        }
     }
+    typing();
 }
 
-document.addEventListener('click', startMusic, { once: true });
-    
+
 const tracks = [
     { src: 'music/passmurny-blik.mp3', title: 'Passmurny - Блик' },
     { src: 'music/Coldplay_-_Yellow.mp3', title: 'Coldplay - Yellow' },
@@ -422,17 +427,17 @@ muteBtn.onclick = () => {
 
 // Старт плеера только после первого клика пользователя
 let musicStarted = false;
-document.addEventListener('click', function startMusicOnce() {
-    if(!musicStarted){
-        loadTrack(currentTrack); // запускаем первый трек
+
+function startMusic() {
+    if (!musicStarted) {
         musicStarted = true;
-        document.removeEventListener('click', startMusicOnce);
+        loadTrack(currentTrack);
     }
-});
+}
+
+document.addEventListener('click', startMusic, { once: true });
 
 </script>
 
 </body>
 </html>
-
-
