@@ -142,7 +142,7 @@ button:hover{
 }
 
 #muteBtn{ right:20px; }
-#nextTrack{ right:70px; }
+#nextTrack{ right:100px; }
 
 #attentionBtn{
     position:fixed;
@@ -409,16 +409,27 @@ const trackTitle = document.getElementById('trackTitle');
 
 function loadTrack(index) {
     currentTrack = index;
+    music.pause();
+    music.currentTime = 0;
     music.src = tracks[index].src;
     trackTitle.innerText = tracks[index].title;
-    music.play().catch(()=>{}); // на случай блокировки автоплеера
+
+    const playPromise = music.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(()=>{});
+    }
 }
 
 
 document.getElementById('nextTrack').onclick = () => {
+    ensureStarted(); // если ещё не стартовало — запустит
     currentTrack = (currentTrack + 1) % tracks.length;
     loadTrack(currentTrack);
 };
+
+document.addEventListener('click', () => {
+    ensureStarted();
+}, { once: true });
 
 muteBtn.onclick = () => {
     music.muted = !music.muted;
@@ -428,14 +439,12 @@ muteBtn.onclick = () => {
 // Старт плеера только после первого клика пользователя
 let musicStarted = false;
 
-function startMusic() {
+function ensureStarted() {
     if (!musicStarted) {
         musicStarted = true;
         loadTrack(currentTrack);
     }
 }
-
-document.addEventListener('click', startMusic, { once: true });
 
 </script>
 
